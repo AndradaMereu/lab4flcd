@@ -1,0 +1,187 @@
+CFG: 
+
+The grammar consists of N ( the set of non terminals ) , Σ ( the set of terminals), P (the set of transitions ) and S (the initial state). 
+
+G=(N,Σ,P,S) 
+
+N=(PR , DCL, DC, SST, CPST, WST, IST, STL, ST, SPST, CO,IOST, AST, EX, TERM, FACT, T, ARDECL, T1, REL, BOOL, CONSTC, STR, CHAR, INT, NZNR, NO, SQDIG, NZDIG, DIG, LTR, LTRDIG, SQLD, ID) 
+
+Σ=(a,b,..,z,A,B,..Z,0,..,9,_,+,-,/,*,>=,<=,=,:=,%,[],{},:,;,  , ARRAY, CHAR, CONST, DO, ELSE, IF, INT, OF, PROGRAM, READ, THEN, VAR, WHILE, WRITE, BEGIN, END) 
+
+P: 
+
+PR -> “VAR” DCL ; CPST . 
+
+DCL -> DC | DC ; DCL 
+
+DC -> ID : T 
+
+SST -> CPST | IST | WST 
+
+CPST -> “BEGIN” STL “END” 
+
+WST -> “WHILE” CO “DO” CPST 
+
+IST -> “IF” CO “THEN” ST “ELSE” ST 
+
+STL -> ST | ST “;” STL 
+
+ST -> SPST | SST 
+
+SPST -> AST | IOST 
+
+CO -> EX REL EX 
+
+IOST -> “READ” ID | “WRITE” ID 
+
+AST -> ID “:=”EX”;” 
+
+EX -> EX OP TERM | TERM 
+
+TERM -> TERM”+”FACT| TERM”-” FACT | TERM”*” FACT | TERM”/” FACT TERM”%” FACT | FACT 
+
+FACT -> “(“EX”)”|ID 
+
+T -> T1 | ARDECL 
+
+ARDECL -> “ARRAY[”NO”] OF” T1 
+
+T1 -> “BOOLEAN” |”CHAR”|”INT”|”STRING” 
+
+REL -> ”<”|”<=”|”=”|”<>”|”>=”|”>” 
+
+BOOL -> ”TRUE”|”FALSE” 
+
+CONSTC -> STR 
+
+STR -> CHAR | CHAR STRING 
+
+CHAR -> ‘LTR’|’DIG’ 
+
+INT -> +NZNR | -NZNR | NO 
+
+NZNR -> NZDIG | NZDIG SQDIG 
+
+NO -> NZDIG | NZDIG SQDIG | “0” 
+
+SQDIG -> DIG| DIG SQDIG 
+
+NZDIG -> “1” | “2” | .. | “9” 
+
+DIG -> “0”| .. |”9” 
+
+LTR-> “a”|...|”z”|”A”|...|”Z” 
+
+LTRDIG -> LTR | DIG 
+
+SQLD -> LTRDIG | LTRDIG SQLD 
+
+ID -> LTR | LTR SQLD 
+
+ 
+
+S: PR 
+
+ 
+
+ 
+
+BNF: 
+
+ 
+
+<letter> ::= “a”|”b”|…|”z”|”A”|”B”|..|”Z” 
+
+<digit> ::= “0”|”1”|..|”9” 
+
+<underline>::=”_” 
+
+<op>::=”+”|”-”|”/”|”*”|”>=”|”<=”|”=”|”:=”|”%” 
+
+<sep>::=”[]”|”{}”|”:”|”;”|” “ 
+
+<reserved_word>::=”array”|”char”|”const”|”do”|”else”|”if”|”int”|”of”|”program”|”read”|”then”|”var”|”while”|”write” 
+
+ 
+
+<letter_or_digit>::=<letter>|<digit> 
+
+<sequence_of_letters_and_digits>::=<letter_or_digit>|<letter_or_digit><sequence_of_letters_and_digits> 
+
+<id>::=<letter>|<letter><sequence_of_letters_and_digits> 
+
+ 
+
+<non_zero_digit>::=”1”|”2”|…|”9” 
+
+<sequence_of_digits>::=<digit>|<digit><sequence_of_digits> 
+
+<no>::=<non_zero_digit>|<non_zero_digit><sequence_of_digits>|”0” 
+
+<non_zero_nr>::= <non_zero_digit>|<non_zero_digit><sequence_of_digits> 
+
+<INT>::=+<non_zero_nr>|-<non_zero_nr>|<no> 
+
+ 
+
+<CHAR>::=’<letter>’|’<digit>’ 
+
+<STRING>::=<char>|<char><string> 
+
+<CONSTCHAR>::=”<string>” 
+
+<BOOLEAN>::=”TRUE”|”FALSE” 
+
+ 
+
+<relation>::=”<”|”<=”|”=”|”<>”|”>=”|”>” 
+
+<type1>::=”BOOLEAN”|”CHAR”|”INT”|”STRING” 
+
+<arraydecl>::=”ARRAY[”<no>”]OF”<type1> 
+
+<type>::=<type1>|<arraydecl> 
+
+ 
+
+<factor>::=”(“<expression>”)”|<id> 
+
+<term>::=<term>”+”<factor>| <term>”-”<factor>| <term>”*”<factor>| <term>”/”<factor>| <term>”%”<factor>| <factor> 
+
+<expression>::=<expression><op><term>|<term> 
+
+<assignstmt>::=<id>”:=”<expression>”;” 
+
+<iostmt>::=”READ”<id>|”WRITE”<id> 
+
+<condition>::=<expression><relation><expression> 
+
+<simplstmt>::=<assignstmt>|<iostmt> 
+
+<stmt>::=<simplstmt>|<structstmt> 
+
+<stmtlist>::=<stmt>|<stmt>”;”<stmtlist> 
+
+<ifstmt>::=”IF”<condition>”THEN”<stmt> “ELSE” <stmt> 
+
+<whilestmt>::=”WHILE”<condition>”DO”<cpmdstmt> 
+
+<cmpdstmt>::=”BEGIN”<stmtlist>”END” 
+
+<structstmt>::=<cmpdstmt>|<ifstmt>|<whilestmt> 
+
+<declaration>::=<id>”:”<type> 
+
+<declist>::=<declaration>|<declaration>”;”<declist> 
+
+<program>::=”VAR” <declist>”;”<cmpdstmt>”.” 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
